@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "node --experimental-strip-types scripts/validate-ring-config.mjs && vite build",
+    "build:review": "node --experimental-strip-types scripts/validate-ring-config.mjs && vite build",
     "build:production": "node scripts/release-preflight.mjs --write-crawl && node --experimental-strip-types scripts/validate-ring-config.mjs && vite build --mode production",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
