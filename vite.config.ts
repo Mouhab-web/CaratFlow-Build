@@ -20,10 +20,13 @@ const stripTanstackSourceTagsFromR3F = () => ({
 });
 
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-// @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
+// nitro builds the deploy bundle from this entry.
 export default defineConfig({
   plugins: [stripTanstackSourceTagsFromR3F()],
   tanstackStart: {
     server: { entry: "server" },
   },
+  // Target Vercel's Build Output API so deploys are served natively on Vercel.
+  // Overrides the Lovable wrapper's cloudflare-module default preset.
+  nitro: { preset: "vercel" },
 });
