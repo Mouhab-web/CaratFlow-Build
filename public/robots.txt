@@ -1,0 +1,4 @@
+# Safe default for local, preview, and staging builds.
+# The production release task replaces this file after validating the owned origin.
+User-agent: *
+Disallow: /

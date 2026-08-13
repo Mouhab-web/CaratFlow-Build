@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 296 64" role="img" aria-labelledby="title">
+  <title id="title">CaratFlow</title>
+  <rect width="64" height="64" rx="16" fill="#12241e"/>
+  <path d="M17 20.5h27M17 32h19M17 43.5h27" fill="none" stroke="#d8b56a" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="47" cy="20.5" r="4" fill="#f4efe5"/>
+  <circle cx="39" cy="32" r="4" fill="#f4efe5"/>
+  <circle cx="47" cy="43.5" r="4" fill="#f4efe5"/>
+  <text x="82" y="42" fill="#12241e" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="650" letter-spacing="-1.2">CaratFlow</text>
+</svg>
