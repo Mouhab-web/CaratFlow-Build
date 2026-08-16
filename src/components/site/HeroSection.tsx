@@ -1,6 +1,9 @@
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { configurationClaim } from "@/content/site-content";
 import { trackCta, trackEvent } from "@/lib/analytics";
 import { ArrowIcon } from "./shared";
+
+const HeroRing = lazy(() => import("./HeroRing"));
 
 function RingIllustration() {
   return (
@@ -118,51 +121,163 @@ export function CustomizerPoster({ compact = false }: { compact?: boolean }) {
   );
 }
 
+type HeroSlide = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  lede: string;
+  proof: string;
+};
+
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    id: "unified",
+    eyebrow: "THE UNIFIED JEWELRY COMMERCE PLATFORM",
+    title: "Configure. Try on. Sell. Operate. Grow.",
+    lede: "CaratFlow turns complex jewelry into interactive buying experiences — wired to the storefront, catalog, pricing, inventory, orders, and customer workflows behind them.",
+    proof: configurationClaim.enabled
+      ? `${configurationClaim.publicLabel} possible ring configurations`
+      : "Interactive ring configuration",
+  },
+];
+
+const AUTOPLAY_MS = 7000;
+
 export default function HeroSection() {
+  const slides = HERO_SLIDES;
+  const multiple = slides.length > 1;
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const go = useCallback(
+    (next: number) => setIndex((current) => (next + slides.length) % slides.length),
+    [slides.length],
+  );
+
+  // Autoplay only makes sense with more than one slide; pauses on hover/focus
+  // and respects reduced-motion.
+  const reducedRef = useRef(false);
+  useEffect(() => {
+    reducedRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+  useEffect(() => {
+    if (!multiple || paused || reducedRef.current) return;
+    const timer = setInterval(() => go(index + 1), AUTOPLAY_MS);
+    return () => clearInterval(timer);
+  }, [multiple, paused, index, go]);
+
+  const active = slides[index];
+
   return (
-    <section className="hero section" id="top" aria-labelledby="hero-title">
-      <div className="hero-wash" aria-hidden="true" />
-      <div className="shell hero-grid">
-        <div className="hero-copy">
-          <p className="eyebrow">THE UNIFIED JEWELRY COMMERCE PLATFORM</p>
-          <h1 id="hero-title">Configure. Try on. Sell. Operate. Grow.</h1>
-          <p className="hero-lede">
-            CaratFlow helps jewelers, jewelry brands, and retailers turn complex products into
-            interactive buying experiences—and connect those experiences to the storefront, catalog,
-            pricing, inventory, orders, and customer workflows behind them.
-          </p>
-          <div className="hero-actions">
-            <a className="button button--primary" href="#demo" onClick={() => trackCta("hero")}>
-              Book a Demo <ArrowIcon />
-            </a>
-            <a
-              className="button button--secondary"
-              href="#customizer"
-              onClick={() =>
-                trackEvent("demo_secondary_click", { module: "customizer", cta_location: "hero" })
-              }
-            >
-              Explore the Customizer
-            </a>
-          </div>
-          <p className="pricing-line">
-            Plans start at <strong>$100/month.</strong> Setup and implementation are scoped
-            separately.
-          </p>
-          <div className="hero-proof-badge">
-            <span>Flagship module</span>
-            <i aria-hidden="true" />
-            <strong>
-              {configurationClaim.enabled
-                ? `${configurationClaim.publicLabel} possible ring configurations`
-                : "Interactive ring configuration"}
-            </strong>
-          </div>
-        </div>
-        <div className="hero-media">
-          <CustomizerPoster />
-        </div>
+    <section
+      className="hero-slider section--dark"
+      id="top"
+      aria-labelledby="hero-title"
+      aria-roledescription="carousel"
+      aria-label="CaratFlow highlights"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
+      <div className="hero-slider__backdrop" aria-hidden="true" />
+      <div className="hero-slider__glow" aria-hidden="true" />
+      <div className="hero-slider__grain" aria-hidden="true" />
+
+      <div className="hero-slider__viewport">
+        {slides.map((slide, i) => (
+          <article
+            key={slide.id}
+            className={`hero-slide${i === index ? " is-active" : ""}`}
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${slides.length}`}
+            aria-hidden={i === index ? undefined : true}
+            hidden={i === index ? undefined : true}
+          >
+            <div className="shell hero-slide__grid">
+              <div className="hero-slide__copy">
+                <p className="hero-slide__eyebrow">{slide.eyebrow}</p>
+                <h1 id="hero-title" className="hero-slide__title">
+                  {slide.title}
+                </h1>
+                <p className="hero-slide__lede">{slide.lede}</p>
+                <div className="hero-slide__actions">
+                  <a className="button button--light" href="#demo" onClick={() => trackCta("hero")}>
+                    Book a Demo <ArrowIcon />
+                  </a>
+                  <a
+                    className="button hero-slide__ghost"
+                    href="#customizer"
+                    onClick={() =>
+                      trackEvent("demo_secondary_click", {
+                        module: "customizer",
+                        cta_location: "hero",
+                      })
+                    }
+                  >
+                    Explore the Customizer
+                  </a>
+                </div>
+                <div className="hero-slide__meta">
+                  <span className="hero-slide__price">
+                    Plans start at <strong>$100/month</strong>
+                  </span>
+                  <span className="hero-slide__dot" aria-hidden="true" />
+                  <span className="hero-slide__proof">{slide.proof}</span>
+                </div>
+              </div>
+
+              <div className="hero-slide__visual" aria-hidden="true">
+                <div className="hero-ring">
+                  <span className="hero-ring__halo" />
+                  <Suspense fallback={<RingIllustration />}>
+                    <HeroRing />
+                  </Suspense>
+                  <span className="hero-ring__pedestal" />
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
+
+      {multiple ? (
+        <div className="hero-slider__controls">
+          <button
+            type="button"
+            className="hero-slider__arrow"
+            aria-label="Previous slide"
+            onClick={() => go(index - 1)}
+          >
+            ‹
+          </button>
+          <div className="hero-slider__dots" role="tablist" aria-label="Choose slide">
+            {slides.map((slide, i) => (
+              <button
+                key={slide.id}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Slide ${i + 1}`}
+                className={`hero-slider__dot${i === index ? " is-active" : ""}`}
+                onClick={() => setIndex(i)}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            className="hero-slider__arrow"
+            aria-label="Next slide"
+            onClick={() => go(index + 1)}
+          >
+            ›
+          </button>
+        </div>
+      ) : null}
+
+      <span className="sr-only" aria-live="polite">
+        {active.title}
+      </span>
     </section>
   );
 }

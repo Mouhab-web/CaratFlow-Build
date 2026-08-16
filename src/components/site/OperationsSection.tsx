@@ -1,151 +1,74 @@
+import { useState } from "react";
 import { operationsFeatures } from "@/content/site-content";
 import { trackCta } from "@/lib/analytics";
 import { setLeadIntent } from "@/lib/lead-intent";
-import ProductTabs from "./ProductTabs";
 import { ArrowIcon, FeatureGrid, SectionHeader, StatusBadge } from "./shared";
 
-const sampleRows = [
-  ["ARC-01", "Arc solitaire", "Configured", "12"],
-  ["HALO-07", "North halo", "Review", "4"],
-  ["BAND-12", "Contour band", "Configured", "18"],
+const erpScreens = [
+  {
+    src: "/assets/crm/erp-dashboard-CricaQTx.jpg",
+    label: "Dashboard",
+    caption: "Sales, profit, orders and top products at a glance.",
+  },
+  {
+    src: "/assets/crm/erp-inventory-CEIDWhA3.jpg",
+    label: "Inventory & SKUs",
+    caption: "Loose diamonds and finished rings with live stock value.",
+  },
+  {
+    src: "/assets/crm/erp-crm-CY3CvpN0.jpg",
+    label: "Orders & CRM",
+    caption: "Orders pipeline from quote to delivery, per customer.",
+  },
+  {
+    src: "/assets/crm/erp-metal-rates-CCoOuEK0.jpg",
+    label: "Metal Rates",
+    caption: "Live gold, silver and platinum spot rates by purity.",
+  },
 ];
+
+function ErpScreenshot({ src, label, caption }: { src: string; label: string; caption: string }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <figure className="erp-shot">
+      <div className="erp-shot__bar" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <span>{label}</span>
+      </div>
+      <div className="erp-shot__frame">
+        {failed ? (
+          <div className="erp-shot__fallback">
+            <span>{label}</span>
+            <small>Screenshot preview</small>
+          </div>
+        ) : (
+          <img
+            src={src}
+            alt={`${label} — CaratFlow ERP & CRM demo screenshot`}
+            loading="lazy"
+            onError={() => setFailed(true)}
+          />
+        )}
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
 
 function OperationsPreview() {
   return (
     <div className="interface-frame interface-frame--operations">
       <div className="interface-frame__header">
-        <span className="sample-label">Sample data</span>
-        <span className="mock-brand">CaratFlow Operations</span>
+        <span className="sample-label">Demo screenshots</span>
+        <span className="mock-brand">CaratFlow Operations · ERP &amp; CRM</span>
       </div>
-      <ProductTabs
-        label="Operations dashboard views"
-        tabs={[
-          {
-            label: "Catalog",
-            content: (
-              <div className="ops-panel">
-                <div className="metric-row">
-                  <span>
-                    <b>5,000</b> Product capacity
-                  </span>
-                  <span>
-                    <b>34</b> Sample styles
-                  </span>
-                  <span>
-                    <b>3</b> Locations
-                  </span>
-                </div>
-                <div
-                  className="table-scroll"
-                  role="region"
-                  aria-label="Sample catalog table"
-                  tabIndex={0}
-                >
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>SKU</th>
-                        <th>Product</th>
-                        <th>Status</th>
-                        <th>Available</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sampleRows.map((row) => (
-                        <tr key={row[0]}>
-                          {row.map((cell) => (
-                            <td key={cell}>{cell}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            ),
-          },
-          {
-            label: "Orders",
-            content: (
-              <div className="ops-panel">
-                <div className="metric-row">
-                  <span>
-                    <b>18</b> New inquiries
-                  </span>
-                  <span>
-                    <b>7</b> Quotes open
-                  </span>
-                  <span>
-                    <b>5</b> In fulfillment
-                  </span>
-                </div>
-                <ol className="order-list">
-                  <li>
-                    <span>CF-1048</span>
-                    <b>Configuration review</b>
-                    <em>Assigned</em>
-                  </li>
-                  <li>
-                    <span>CF-1047</span>
-                    <b>Quote prepared</b>
-                    <em>Awaiting approval</em>
-                  </li>
-                  <li>
-                    <span>CF-1046</span>
-                    <b>Fulfillment handoff</b>
-                    <em>In progress</em>
-                  </li>
-                </ol>
-              </div>
-            ),
-          },
-          {
-            label: "Pricing",
-            content: (
-              <div className="ops-panel">
-                <div className="pricing-rule">
-                  <span>Authorized metal rate</span>
-                  <b>Manual desk rate</b>
-                  <small>Last reviewed · Sample only</small>
-                </div>
-                <div className="rule-flow">
-                  <span>Rate</span>
-                  <i>＋</i>
-                  <span>Purity</span>
-                  <i>＋</i>
-                  <span>Making charge</span>
-                  <i>＋</i>
-                  <span>Margin</span>
-                  <i>→</i>
-                  <strong>Quoted price</strong>
-                </div>
-              </div>
-            ),
-          },
-          {
-            label: "Reporting",
-            content: (
-              <div className="ops-panel">
-                <div className="chart-summary">
-                  <div className="bar-chart" aria-hidden="true">
-                    {[38, 62, 49, 78, 72, 92].map((height, index) => (
-                      <i key={index} style={{ height: `${height}%` }} />
-                    ))}
-                  </div>
-                  <div>
-                    <p className="mock-kicker">Text summary</p>
-                    <h3>Qualified product interest increased across the six sample periods.</h3>
-                    <p>
-                      This conceptual chart uses synthetic values and does not represent a customer
-                      result.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ),
-          },
-        ]}
-      />
+      <div className="erp-gallery" role="group" aria-label="ERP and CRM dashboard screenshots">
+        {erpScreens.map((shot) => (
+          <ErpScreenshot key={shot.src} {...shot} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -179,8 +102,9 @@ export default function OperationsSection() {
           <FeatureGrid features={operationsFeatures} />
         </div>
         <p className="product-disclosure">
-          Final module availability is confirmed during solution design. A capability is never
-          presented as native when it depends on a third-party integration.
+          Screenshots show a representative ERP &amp; CRM back-office for demonstration. Final
+          module availability is confirmed during solution design. A capability is never presented
+          as native when it depends on a third-party integration.
         </p>
         <div className="section-outcome">
           <p>

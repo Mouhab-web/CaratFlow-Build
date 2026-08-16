@@ -254,6 +254,61 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .hero-proof-badge strong { color: var(--charcoal); }
 .hero-media { min-width: 0; }
 
+/* ==========================================================================
+   Hero slider — a professional dark, luxury slide (replaces the old hero).
+   Structured as a carousel; controls only appear when >1 slide.
+   ========================================================================== */
+.hero-slider { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: clamp(34rem, 88vh, 52rem); padding: clamp(6.5rem, 12vw, 9rem) 0 clamp(3.5rem, 7vw, 6rem); background: #0a0f0d; color: var(--warm-white); }
+.hero-slider__backdrop { position: absolute; inset: 0; z-index: -3; background:
+  radial-gradient(120% 90% at 78% 20%, #123a30 0%, #0c1c18 42%, #070b0a 100%),
+  linear-gradient(180deg, #0b100e 0%, #070a09 100%); }
+.hero-slider__glow { position: absolute; inset: 0; z-index: -2; pointer-events: none; background:
+  radial-gradient(38% 42% at 74% 30%, rgba(179,139,77,0.32), transparent 70%),
+  radial-gradient(46% 50% at 16% 82%, rgba(13,74,58,0.42), transparent 72%); mix-blend-mode: screen; }
+.hero-slider__grain { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.hero-slider__viewport { position: relative; width: 100%; }
+
+.hero-slide { width: 100%; }
+.hero-slide__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: center; gap: clamp(2.5rem, 6vw, 5.5rem); }
+.hero-slide.is-active .hero-slide__copy > * { animation: heroRise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-slide.is-active .hero-slide__copy > *:nth-child(2) { animation-delay: 0.06s; }
+.hero-slide.is-active .hero-slide__copy > *:nth-child(3) { animation-delay: 0.12s; }
+.hero-slide.is-active .hero-slide__copy > *:nth-child(4) { animation-delay: 0.18s; }
+.hero-slide.is-active .hero-slide__copy > *:nth-child(5) { animation-delay: 0.24s; }
+@keyframes heroRise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+.hero-slide__eyebrow { margin: 0 0 1.35rem; display: inline-flex; align-items: center; gap: 0.7rem; color: #e6c78a; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; }
+.hero-slide__eyebrow::before { content: ""; width: 2.2rem; height: 1px; background: linear-gradient(90deg, transparent, #e6c78a); }
+.hero-slide__title { max-width: 15ch; margin: 0; color: var(--warm-white); font-family: var(--font-display); font-size: clamp(2.9rem, 6vw, 5.6rem); line-height: 0.98; letter-spacing: -0.04em; text-wrap: balance; }
+.hero-slide__lede { max-width: 40rem; margin: 1.6rem 0 0; color: rgba(233,237,232,0.74); font-size: clamp(1.02rem, 1.5vw, 1.2rem); line-height: 1.62; }
+.hero-slide__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.1rem; }
+.hero-slide__ghost { color: var(--warm-white); background: transparent; border-color: rgba(230,199,138,0.55); }
+.hero-slide__ghost:hover { border-color: #e6c78a; background: rgba(230,199,138,0.1); }
+.hero-slide__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.85rem; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.12); color: rgba(233,237,232,0.62); font-size: 0.8rem; }
+.hero-slide__price strong { color: var(--warm-white); }
+.hero-slide__proof { color: #e6c78a; font-weight: 600; letter-spacing: 0.02em; }
+.hero-slide__dot { width: 4px; height: 4px; border-radius: 50%; background: var(--champagne); }
+
+/* Ring visual */
+.hero-slide__visual { position: relative; display: grid; place-items: center; min-width: 0; }
+.hero-ring { position: relative; width: min(30rem, 90%); aspect-ratio: 1 / 1; display: grid; place-items: center; }
+.hero-ring__halo { position: absolute; inset: 6%; border-radius: 50%; background: radial-gradient(circle at 50% 42%, rgba(179,139,77,0.42), rgba(179,139,77,0.12) 45%, transparent 68%); filter: blur(6px); }
+.hero-ring__halo::after { content: ""; position: absolute; inset: 20%; border-radius: 50%; border: 1px solid rgba(230,199,138,0.22); }
+.hero-ring .ring-illustration { position: relative; z-index: 1; width: 100%; height: auto; filter: drop-shadow(0 30px 55px rgba(0,0,0,0.55)); animation: heroFloat 6s ease-in-out infinite; }
+.hero-ring__canvas { position: absolute; inset: 0; z-index: 2; }
+.hero-ring__canvas canvas { width: 100% !important; height: 100% !important; display: block; filter: drop-shadow(0 26px 50px rgba(0,0,0,0.5)); }
+.hero-ring__pedestal { position: absolute; bottom: 6%; left: 50%; width: 62%; height: 3.5rem; transform: translateX(-50%); background: radial-gradient(ellipse at center, rgba(179,139,77,0.35), transparent 70%); filter: blur(4px); z-index: 0; }
+@keyframes heroFloat { 0%, 100% { transform: translateY(-1.5%); } 50% { transform: translateY(1.5%); } }
+
+/* Controls */
+.hero-slider__controls { position: absolute; z-index: 3; left: 0; right: 0; bottom: clamp(1.5rem, 3vw, 2.5rem); display: flex; align-items: center; justify-content: center; gap: 1.25rem; }
+.hero-slider__arrow { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; color: var(--warm-white); background: rgba(255,255,255,0.04); font-size: 1.4rem; line-height: 1; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
+.hero-slider__arrow:hover { border-color: #e6c78a; background: rgba(230,199,138,0.12); }
+.hero-slider__dots { display: flex; align-items: center; gap: 0.6rem; }
+.hero-slider__dot { width: 0.55rem; height: 0.55rem; padding: 0; border: 0; border-radius: 999px; background: rgba(255,255,255,0.28); cursor: pointer; transition: width 0.25s ease, background 0.25s ease; }
+.hero-slider__dot.is-active { width: 1.7rem; background: #e6c78a; }
+
 .customizer-poster { margin: 0; overflow: hidden; border: 1px solid rgba(13,74,58,0.16); border-radius: 1.4rem; color: var(--charcoal); background: var(--warm-white); box-shadow: 0 35px 80px -40px rgba(9,47,38,0.4); }
 .poster-toolbar { min-height: 3.6rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #e6dfd4; padding: 0.85rem 1rem; }
 .poster-brand { font-weight: 750; }
@@ -352,6 +407,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .hero-grid, .proof-heading, .product-split { grid-template-columns: 1fr; }
   .hero h1 { max-width: 12ch; }
   .hero-media { max-width: 48rem; }
+  .hero-slide__grid { grid-template-columns: 1fr; gap: clamp(2rem, 8vw, 3rem); }
+  .hero-slide__visual { grid-row: 1; margin: 0 auto; }
+  .hero-ring { width: min(20rem, 68%); }
+  .hero-slide__title { max-width: 18ch; }
   .workflow-list { grid-template-columns: 1fr; gap: 0; margin-top: 3rem; }
   .workflow-list::before { top: 1.5rem; bottom: 1.5rem; left: 1.5rem; right: auto; width: 1px; height: auto; }
   .workflow-list li { display: grid; grid-template-columns: 3rem 1fr; gap: 1.2rem; }
@@ -515,6 +574,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .tryon-poster__footer strong { color: white; font: 500 1.15rem/1.1 var(--font-display); }
 .tryon-poster__footer span { text-align: right; color: #c4c8c0; }
 
+/* Live try-on stage: a plain black surface that hosts the inline camera demo. */
+.tryon-stage { position: relative; overflow: hidden; min-height: 32rem; border: 1px solid var(--border-warm); border-radius: 1.25rem; background: #000; box-shadow: 0 30px 70px -45px rgba(9,47,38,0.55); }
+.tryon-stage__bar { position: relative; z-index: 25; min-height: 3.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 1rem; color: #dfe2dc; font-size: 0.7rem; }
+.tryon-stage__cam { display: inline-flex; align-items: center; gap: 0.35rem; }
+.tryon-stage__cam::before { content: ""; width: 0.45rem; height: 0.45rem; border-radius: 50%; }
+.tryon-stage__cam--off { color: #8f938c; }
+.tryon-stage__cam--off::before { background: #6b6f68; }
+.tryon-stage__cam--on { color: #7fe0a6; }
+.tryon-stage__cam--on::before { background: #46c47f; box-shadow: 0 0 8px rgba(70,196,127,0.8); }
+.tryon-stage__idle { position: absolute; inset: 3.2rem 0 0; display: grid; place-items: center; padding: 1.5rem 2rem; text-align: center; color: #c9ccc5; }
+.tryon-stage__idle p { max-width: 24rem; margin: 0; font-size: 0.85rem; line-height: 1.55; }
+.tryon-stage__idle strong { color: #efe9dc; }
+.tryon-stage-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-top: 1rem; }
+.tryon-stage-actions small { flex-basis: 100%; color: var(--muted-ink); opacity: 0.85; font-size: 0.7rem; line-height: 1.4; }
+
 .dialog-layer { position: fixed; z-index: 180; inset: 0; display: grid; place-items: center; padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); }
 .dialog-backdrop { position: absolute; inset: 0; background: rgba(18,22,19,0.78); backdrop-filter: blur(8px); }
 .preflight-dialog { position: relative; width: min(58rem, 100%); max-height: calc(100dvh - 2rem); display: grid; grid-template-columns: 0.85fr 1.15fr; overflow: auto; border: 1px solid rgba(255,255,255,0.18); border-radius: 1.4rem; color: var(--charcoal); background: var(--warm-white); box-shadow: 0 40px 100px rgba(0,0,0,0.34); }
@@ -579,6 +653,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .purchase-view small { color: var(--muted-ink); }
 
 .ops-panel { min-height: 27rem; padding: 1.25rem; }
+
+/* ERP & CRM demo screenshot gallery (Operations preview). */
+.erp-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; padding: 1.25rem; }
+.erp-shot { margin: 0; overflow: hidden; border: 1px solid #e0d8cc; border-radius: 0.9rem; background: var(--warm-white); box-shadow: 0 18px 45px -35px rgba(9,47,38,0.5); transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; }
+.erp-shot:hover { border-color: rgba(13,74,58,0.35); box-shadow: 0 24px 55px -32px rgba(9,47,38,0.55); transform: translateY(-2px); }
+.erp-shot__bar { display: flex; align-items: center; gap: 0.4rem; border-bottom: 1px solid #ece5d9; padding: 0.55rem 0.75rem; background: #f4efe6; }
+.erp-shot__bar i { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #cdbfa7; }
+.erp-shot__bar i:nth-child(1) { background: #d98b7a; }
+.erp-shot__bar i:nth-child(2) { background: #d9b96a; }
+.erp-shot__bar i:nth-child(3) { background: #8fb59f; }
+.erp-shot__bar span { margin-left: 0.5rem; color: var(--muted-ink); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.erp-shot__frame { position: relative; aspect-ratio: 16 / 10; background: linear-gradient(135deg, #f0eadf, #e6ddcd); }
+.erp-shot__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.erp-shot__fallback { position: absolute; inset: 0; display: grid; place-content: center; gap: 0.35rem; text-align: center; color: var(--muted-ink); }
+.erp-shot__fallback span { font-weight: 700; }
+.erp-shot__fallback small { font-size: 0.68rem; opacity: 0.75; }
+.erp-shot figcaption { border-top: 1px solid #ece5d9; padding: 0.65rem 0.8rem; color: var(--muted-ink); font-size: 0.72rem; line-height: 1.4; }
 .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin-bottom: 1rem; }
 .metric-row span { border: 1px solid #dfd7ca; border-radius: 0.75rem; padding: 0.85rem; color: var(--muted-ink); font-size: 0.68rem; }
 .metric-row b { display: block; margin-bottom: 0.2rem; color: var(--charcoal); font: 500 1.6rem/1 var(--font-display); }
@@ -626,6 +717,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 @media (max-width: 767px) {
   .tryon-preview { min-height: 25rem; }
+  .tryon-stage { min-height: 26rem; }
+  .tryon-stage-actions .button { width: 100%; }
   .dialog-layer { padding: 0; }
   .preflight-dialog { width: 100%; height: 100dvh; max-height: none; border: 0; border-radius: 0; padding-top: env(safe-area-inset-top); }
   .preflight-visual { min-height: 15rem; }
@@ -634,6 +727,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .interface-frame__header { align-items: flex-start; flex-direction: column; }
   .mock-brand small { display: block; margin: 0.25rem 0 0; }
   .tab-panel, .commerce-view, .ops-panel { min-height: 24rem; }
+  .erp-gallery { grid-template-columns: 1fr; }
   .configuration-view, .chart-summary { grid-template-columns: 1fr; }
   .metric-row { grid-template-columns: 1fr; }
   .order-list li { grid-template-columns: 1fr; gap: 0.25rem; }
@@ -672,4 +766,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   background: linear-gradient(90deg, transparent, oklch(0.72 0.14 75 / 0.3), transparent);
   background-size: 200% 100%;
   animation: shimmer 3s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Ring customizer embedded in the dark customizer-section.
+   The customizer component was designed to sit on a light page (dark-green
+   headings, muted grey labels). Inside CaratFlow it lives on a near-black
+   section, so we flip its glass panel dark and its text tokens light — this
+   keeps "Configurator / Design your ring", the section labels and every
+   control legible without touching the shared component markup.
+   -------------------------------------------------------------------------- */
+.section--dark #ring-customizer {
+  --glass: oklch(0.2 0.02 165 / 0.5);
+  --foreground: oklch(0.96 0.01 85);
+  --muted-foreground: oklch(0.82 0.02 150);
+  --emerald-deep: oklch(0.97 0.008 85);
+  --border: oklch(1 0 0 / 0.18);
+}
+.section--dark #ring-customizer .bg-glass {
+  border-color: oklch(1 0 0 / 0.12);
 }

@@ -200,10 +200,12 @@ export default function JewelryTryOn({
   onClose,
   initialCategory = "earrings",
   cameraStartAuthorized = false,
+  embedded = false,
 }: {
   onClose: () => void;
   initialCategory?: "earrings" | "necklace";
   cameraStartAuthorized?: boolean;
+  embedded?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -511,7 +513,11 @@ export default function JewelryTryOn({
   };
 
   return (
-    <div className="fixed inset-0 z-[80] bg-obsidian/95 backdrop-blur-md flex flex-col">
+    <div
+      className={`${
+        embedded ? "absolute inset-0 z-20 rounded-[inherit]" : "fixed inset-0 z-[80]"
+      } bg-obsidian/95 backdrop-blur-md flex flex-col overflow-hidden`}
+    >
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-border/30">
         <div className="text-xs uppercase tracking-[0.3em] text-gold truncate">
           Jewelry Try-On · Beta

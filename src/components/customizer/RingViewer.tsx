@@ -31,11 +31,16 @@ function applyMetal(scene: THREE.Object3D, metal: keyof typeof METAL_COLOR) {
       mats.forEach((mat) => {
         const std = mat as THREE.MeshStandardMaterial;
         const name = (mat.name || "").toLowerCase();
-        // Skip diamond/stone materials (keep transparent crystal look)
+        // Skip diamond/stone materials (keep transparent crystal look). The
+        // __diamondEnhanced flag is the definitive guard: once enhanceDiamonds
+        // has upgraded a stone we must never recolor it, otherwise switching to
+        // a gold metal would tint the diamond gold.
         if (
+          (mat.userData as { __diamondEnhanced?: boolean }).__diamondEnhanced ||
           name.includes("diamond") ||
           name.includes("stone") ||
           name.includes("gem") ||
+          name.includes("crystal") ||
           std.transparent
         )
           return;

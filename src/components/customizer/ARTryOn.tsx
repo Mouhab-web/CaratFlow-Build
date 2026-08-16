@@ -26,10 +26,14 @@ function applyMetal(scene: THREE.Object3D, metal: keyof typeof METAL_COLOR) {
       mats.forEach((mat) => {
         const std = mat as THREE.MeshStandardMaterial;
         const name = (mat.name || "").toLowerCase();
+        // Never recolor an enhanced stone (see RingViewer for rationale) — this
+        // keeps the diamond crystal-clear even after a gold metal is selected.
         if (
+          (mat.userData as { __diamondEnhanced?: boolean }).__diamondEnhanced ||
           name.includes("diamond") ||
           name.includes("stone") ||
           name.includes("gem") ||
+          name.includes("crystal") ||
           std.transparent
         )
           return;
@@ -517,9 +521,11 @@ function classifyMediaError(e: unknown): ArErrorKind {
 export default function ARTryOn({
   onClose,
   cameraStartAuthorized = false,
+  embedded = false,
 }: {
   onClose: () => void;
   cameraStartAuthorized?: boolean;
+  embedded?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasWrapRef = useRef<HTMLDivElement>(null);
@@ -1030,7 +1036,11 @@ export default function ARTryOn({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-obsidian/95 backdrop-blur-xl flex flex-col">
+    <div
+      className={`${
+        embedded ? "absolute inset-0 z-20 rounded-[inherit]" : "fixed inset-0 z-[100]"
+      } bg-obsidian/95 backdrop-blur-xl flex flex-col overflow-hidden`}
+    >
       <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-border/30 gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <span className="w-2 h-2 rounded-full bg-gold animate-pulse shrink-0" />
