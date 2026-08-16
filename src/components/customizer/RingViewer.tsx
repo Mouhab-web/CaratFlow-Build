@@ -1,15 +1,14 @@
 import { Suspense, useMemo, useEffect, useRef, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
   useGLTF,
   Center,
   ContactShadows,
   useProgress,
-  Environment,
-  Lightformer,
 } from "@react-three/drei";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { useRing } from "@/lib/ring-store";
 import {
   BANDS,
@@ -47,13 +46,35 @@ function applyMetal(scene: THREE.Object3D, metal: keyof typeof METAL_COLOR) {
         std.color = new THREE.Color(m.color);
         std.metalness = m.metalness;
         std.roughness = m.roughness;
-        // Metals are pure reflectors — without a strong envMap contribution they
-        // read as flat/near-black. Boost so the studio lightformers show up.
-        std.envMapIntensity = 1.35;
+        // Leave envMapIntensity at the material default (1) — same as
+        // ring-customizer. The neutral studio HDR provides enough reflection;
+        // boosting it only exaggerated the environment's tint on the metal.
         std.needsUpdate = true;
       });
     }
   });
+}
+
+// Neutral studio environment generated at runtime from three's built-in
+// RoomEnvironment — NO external HDR/CDN fetch (drei's <Environment preset> was
+// failing the demo when the CDN was unreachable). This is the same neutral env
+// the offscreen snapshot renderer uses. A neutral env is what makes a
+// metalness:1 platinum reflect as true silver instead of picking up a gold tint.
+function RoomEnv() {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  useEffect(() => {
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const texture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    const previous = scene.environment;
+    scene.environment = texture;
+    return () => {
+      scene.environment = previous;
+      texture.dispose();
+      pmrem.dispose();
+    };
+  }, [gl, scene]);
+  return null;
 }
 
 function GLBModel({ url, scale }: { url: string; scale?: [number, number, number] }) {
@@ -152,53 +173,13 @@ export default function RingViewer() {
       >
         <color attach="background" args={["#101712"]} />
         <fog attach="fog" args={["#101712", 8, 18]} />
-        <ambientLight intensity={0.55} />
-        <hemisphereLight args={["#fff8e9", "#17382e", 0.7]} />
+        {/* Lighting rig matched 1:1 to ring-customizer (the reference that
+            renders platinum as true silver). No warm hemisphere light. */}
+        <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
         <directionalLight position={[-4, 3, -3]} intensity={0.5} color="#c9a14a" />
-        <spotLight position={[0, 6, 0]} angle={0.4} intensity={0.7} penumbra={1} />
-        {/* Self-contained studio env (no external HDR fetch) — metals need
-            something to reflect and transmission diamonds need something to
-            refract, otherwise both render flat/near-black. */}
-        <Environment resolution={256} frames={1}>
-          <group rotation={[Math.PI / 2, 0, 0]}>
-            <Lightformer
-              intensity={3}
-              form="rect"
-              position={[0, 6, 0]}
-              scale={[8, 8, 1]}
-              color="#fff6e6"
-            />
-            <Lightformer
-              intensity={2.2}
-              form="rect"
-              position={[5, 2, 4]}
-              scale={[4, 8, 1]}
-              color="#ffffff"
-            />
-            <Lightformer
-              intensity={2.2}
-              form="rect"
-              position={[-5, 2, 4]}
-              scale={[4, 8, 1]}
-              color="#ffffff"
-            />
-            <Lightformer
-              intensity={1.6}
-              form="rect"
-              position={[0, 1, -6]}
-              scale={[10, 6, 1]}
-              color="#d9c48a"
-            />
-            <Lightformer
-              intensity={1.4}
-              form="ring"
-              position={[3, -3, 3]}
-              scale={3}
-              color="#ffe9c7"
-            />
-          </group>
-        </Environment>
+        <spotLight position={[0, 6, 0]} angle={0.4} intensity={0.8} penumbra={1} />
+        <RoomEnv />
         <Suspense fallback={null}>
           <RingScene />
           <ContactShadows position={[0, -1.2, 0]} opacity={0.4} blur={2.5} scale={6} />
