@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">CaratFlow jewelry commerce platform</title>
+  <desc id="desc">A sample ring customizer interface connected to commerce and operations cards.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f7f2e8"/>
+      <stop offset="1" stop-color="#e6efe9"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f2d797"/>
+      <stop offset="1" stop-color="#a97c31"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1080" cy="60" r="235" fill="#d7e6dc" opacity=".6"/>
+  <circle cx="86" cy="605" r="240" fill="#ead9b4" opacity=".45"/>
+  <g transform="translate(72 62)">
+    <rect width="54" height="54" rx="14" fill="#12241e"/>
+    <path d="M14 17h23M14 27h16M14 37h23" fill="none" stroke="#d8b56a" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="40" cy="17" r="3.5" fill="#f4efe5"/>
+    <circle cx="33" cy="27" r="3.5" fill="#f4efe5"/>
+    <circle cx="40" cy="37" r="3.5" fill="#f4efe5"/>
+    <text x="70" y="39" fill="#12241e" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="-1">CaratFlow</text>
+  </g>
+  <text x="72" y="190" fill="#12241e" font-family="Georgia, serif" font-size="61" font-weight="600" letter-spacing="-1.8">Configure. Try on.</text>
+  <text x="72" y="257" fill="#12241e" font-family="Georgia, serif" font-size="61" font-weight="600" letter-spacing="-1.8">Sell. Operate. Grow.</text>
+  <text x="76" y="305" fill="#4d6158" font-family="Inter, Arial, sans-serif" font-size="21">One connected jewelry commerce platform.</text>
+  <g transform="translate(665 65)">
+    <rect width="456" height="500" rx="26" fill="#fff" stroke="#cbd8d0" stroke-width="2"/>
+    <rect x="22" y="22" width="278" height="330" rx="18" fill="#f3f0e8"/>
+    <ellipse cx="160" cy="205" rx="76" ry="97" fill="none" stroke="url(#gold)" stroke-width="22"/>
+    <path d="M113 113l47-39 47 39-47 40z" fill="#f7fbfa" stroke="#b8c7c2" stroke-width="5"/>
+    <path d="M126 111l34-37 33 37-33 42z" fill="none" stroke="#d7e2df" stroke-width="3"/>
+    <text x="42" y="55" fill="#607068" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.4">SAMPLE CONFIGURATION</text>
+    <g transform="translate(320 28)" font-family="Inter, Arial, sans-serif">
+      <text y="20" fill="#12241e" font-size="16" font-weight="700">Your ring</text>
+      <text y="55" fill="#607068" font-size="13">Metal</text><text y="74" fill="#12241e" font-size="14">18k yellow gold</text>
+      <text y="111" fill="#607068" font-size="13">Stone</text><text y="130" fill="#12241e" font-size="14">Round · 1.5 ct</text>
+      <text y="167" fill="#607068" font-size="13">Setting</text><text y="186" fill="#12241e" font-size="14">Six prong</text>
+    </g>
+    <path d="M300 390h45" stroke="#d8b56a" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="356" cy="390" r="5" fill="#d8b56a"/>
+    <path d="M367 390h66" stroke="#d8b56a" stroke-width="3" stroke-linecap="round"/>
+    <rect x="24" y="374" width="265" height="94" rx="14" fill="#12241e"/>
+    <text x="45" y="408" fill="#b8cabf" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">COMMERCE</text>
+    <text x="45" y="438" fill="#fff" font-family="Inter, Arial, sans-serif" font-size="17">Product selection</text>
+    <rect x="350" y="374" width="82" height="94" rx="14" fill="#e5eee8"/>
+    <text x="366" y="408" fill="#53665c" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">OPERATE</text>
+    <path d="M368 432h46M368 446h32" stroke="#6a7d73" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(74 376)" font-family="Inter, Arial, sans-serif">
+    <rect width="520" height="136" rx="20" fill="#fff" fill-opacity=".8" stroke="#d4ddd7"/>
+    <text x="28" y="40" fill="#6a7d73" font-size="13" font-weight="700" letter-spacing="1.5">ONE JEWELRY DATA PATH</text>
+    <text x="28" y="82" fill="#12241e" font-size="18" font-weight="650">Product choice</text>
+    <path d="M166 76h39" stroke="#c39b52" stroke-width="3"/>
+    <text x="222" y="82" fill="#12241e" font-size="18" font-weight="650">Purchase</text>
+    <path d="M316 76h39" stroke="#c39b52" stroke-width="3"/>
+    <text x="371" y="82" fill="#12241e" font-size="18" font-weight="650">Operations</text>
+    <text x="28" y="112" fill="#617269" font-size="14">Configured and integration-dependent where stated.</text>
+  </g>
+</svg>
